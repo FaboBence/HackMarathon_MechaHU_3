@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from EasyFits import pre_process
+from EasyFits import pre_process, fit_ellipse
 from image_loader import *
 
 if __name__ == "__main__":
@@ -9,6 +9,7 @@ if __name__ == "__main__":
     done = []
     for i in tiffs:
         done.append(pre_process(i))
+        print(fit_ellipse(done[-1]))
     show_images(done,pngs)
     #plt.imshow(tiffs[0], cmap="gray", vmin=0, vmax=256)
     #plt.show()
