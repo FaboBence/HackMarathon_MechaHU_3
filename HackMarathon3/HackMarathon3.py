@@ -7,9 +7,15 @@ from image_loader import *
 if __name__ == "__main__":
     tiffs , pngs = load_images()
     done = []
-    for i in tiffs:
-        done.append(pre_process(i))
-        print(fit_ellipse(done[-1]))
+    for i,tiff in enumerate(tiffs):
+        done.append(pre_process(tiff))
+        try:
+            xc, yc, a, b, theta = fit_ellipse(done[-1])
+            pngs[i] = cv2.ellipse(pngs[i],(int(xc),int(yc)),(int(a),int(b)),int(theta*180/3.14),0,360,(0,255,0),3)
+            plt.imshow(pngs[i], vmin=0, vmax=256)
+            print("ez is lefutott")
+        except:
+            print("No ellipse found")
     show_images(done,pngs)
     #plt.imshow(tiffs[0], cmap="gray", vmin=0, vmax=256)
     #plt.show()

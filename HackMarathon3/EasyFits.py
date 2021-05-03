@@ -19,6 +19,10 @@ def pre_process(img):
    #plt.imshow(edges, cmap="gray", vmin=0, vmax=256)
    #plt.show()
    return edges
+
+def inner_noise_filtering():
+    pass
+
    # Ellipse fitting
 def fit_ellipse(edges):
    edges_coord = np.where(edges > 0)
