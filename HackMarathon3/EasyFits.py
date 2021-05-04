@@ -11,7 +11,8 @@ def pre_process(img):
    #print(type(img_tiff[0][0]),"\n",type(img[0][0]))
    #*plt.imshow(img, cmap="gray", vmin=1000, vmax=1001)
    #*plt.show()
-   ret, thresh16 = cv2.threshold(img,1000,10,cv2.THRESH_BINARY)
+   max_brightnes = np.max(img)
+   ret, thresh16 = cv2.threshold(img,int(max_brightnes/3),10,cv2.THRESH_BINARY)
       # Edge detection
    #kernel = np.array([[-1,-1,-1],[-1,8,-1], [-1,-1,-1]])
    thresh8 = thresh16.astype('uint8')
@@ -35,6 +36,7 @@ def fit_ellipse(edges):
       ell.estimate(edge_poins)
       xc, yc, a, b, theta = ell.params
       #print(xc,yc)
+      print(np.average(np.square(ell.residuals(edge_poins))))
       return xc, yc, a, b, theta
    except:
       return None 
