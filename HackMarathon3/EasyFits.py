@@ -12,7 +12,7 @@ def pre_process(img):
    #*plt.imshow(img, cmap="gray", vmin=1000, vmax=1001)
    #*plt.show()
    max_brightnes = np.max(img)
-   ret, thresh16 = cv2.threshold(img,int(max_brightnes/3),10,cv2.THRESH_BINARY)
+   ret, thresh16 = cv2.threshold(img,int(max_brightnes/4),10,cv2.THRESH_BINARY)
       # Edge detection
    #kernel = np.array([[-1,-1,-1],[-1,8,-1], [-1,-1,-1]])
    thresh8 = thresh16.astype('uint8')
