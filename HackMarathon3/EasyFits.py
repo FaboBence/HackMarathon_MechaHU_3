@@ -3,16 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage.measure import EllipseModel
 from matplotlib.patches import Ellipse
-#import scipy.signal as signal
+
 def pre_process(img):
    # Image processing
-   #img = cv2.imread("../marathon-thermofisher-challenge-master/data/train/1 Easy Fits/2018-02-15 17.27.27.162000.tiff",-1)
-   #img = cv2.imread("../marathon-thermofisher-challenge-master/data/train/1 Easy Fits/2018-02-15 17.27.27.162000.png",2)
-   #print(type(img_tiff[0][0]),"\n",type(img[0][0]))
-   #*plt.imshow(img, cmap="gray", vmin=1000, vmax=1001)
-   #*plt.show()
    max_brightnes = np.max(img)
-   ret, thresh16 = cv2.threshold(img,int(max_brightnes/4),10,cv2.THRESH_BINARY)
+   # Blur
+   img_blur = cv2.GaussianBlur(img,(25,25),0,borderType = cv2.BORDER_DEFAULT)
+   # Thresholding
+   ret, thresh16 = cv2.threshold(img_blur,int(max_brightnes/4),10,cv2.THRESH_BINARY)
       # Edge detection
    #kernel = np.array([[-1,-1,-1],[-1,8,-1], [-1,-1,-1]])
    thresh8 = thresh16.astype('uint8')
@@ -37,7 +35,6 @@ def fit_ellipse(edges):
       ell.estimate(edge_poins)
       xc, yc, a, b, theta = ell.params
       theta = theta*180/3.14
-      #print(xc,yc)
       print(np.average(np.square(ell.residuals(edge_poins))))
       return xc, yc, a, b, theta
    except:

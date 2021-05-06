@@ -20,12 +20,16 @@ if __name__ == "__main__":
             filtered.append(filtered_img)
             xc, yc, a, b, theta = fit_ellipse(filtered_img)
             
+            cv2.ellipse(pngs[i],(int(xc),int(yc)),(int(a),int(b)),int(theta),0,360,(0,255,0),3)
             end = time.time() # Measuring elapsed time
             results.append([names[i],xc,yc,a,b,theta,(end-start)*1000]) # Saving results
-            cv2.ellipse(pngs[i],(int(xc),int(yc)),(int(a),int(b)),int(theta),0,360,(0,255,0),3)
         except:
+            end = time.time() # Measuring elapsed time
+            results.append([names[i],'','','','','',(end-start)*1000]) # If we didn't find an ellipse results
             print("No ellipse found")
     create_csv("Results.csv", results)
+    score = calculator("../marathon-thermofisher-challenge-master/data/ground_truths_train.csv","Results.csv")
+    print("Score:",score)
     show_images(done,filtered, pngs)
     
 """
