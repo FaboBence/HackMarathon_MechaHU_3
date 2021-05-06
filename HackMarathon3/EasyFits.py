@@ -21,8 +21,9 @@ def pre_process(img):
    #plt.show()
    return edges
 
-def inner_noise_filtering():
-    pass
+def inner_noise_filtering(edge_img,xc,yc,a,b,theta):
+    out_img = cv2.ellipse(edge_img,(int(xc),int(yc)),(int(a),int(b)),int(theta),0,360,(0,0,0),-1)
+    return out_img
 
    # Ellipse fitting
 def fit_ellipse(edges):
@@ -35,6 +36,7 @@ def fit_ellipse(edges):
       ell = EllipseModel()
       ell.estimate(edge_poins)
       xc, yc, a, b, theta = ell.params
+      theta = theta*180/3.14
       #print(xc,yc)
       print(np.average(np.square(ell.residuals(edge_poins))))
       return xc, yc, a, b, theta
