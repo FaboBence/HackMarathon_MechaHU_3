@@ -12,15 +12,17 @@ def load_images(path = pre_filename+files[4-1]):
     pngs=[]
     tiffs = []
     names = []
-    for filename in os.listdir(path):
-        file_n = os.fsdecode(filename)
-        if file_n.endswith(".png"): 
-            pngs.append(cv2.imread(os.path.join(path,filename),-1))
-        elif file_n.endswith(".tiff"):
-            names.append(file_n)
-            tiffs.append(cv2.imread(os.path.join(path,filename),-1))
-        else:
-            print("???")
+    for file in files:
+        path = pre_filename + file
+        for filename in os.listdir(path):
+            file_n = os.fsdecode(filename)
+            if file_n.endswith(".png"): 
+                pngs.append(cv2.imread(os.path.join(path,filename),-1))
+            elif file_n.endswith(".tiff"):
+                names.append(file_n)
+                tiffs.append(cv2.imread(os.path.join(path,filename),-1))
+            else:
+                print("???")
     return tiffs, pngs, names
 
 def create_csv(filename,results):

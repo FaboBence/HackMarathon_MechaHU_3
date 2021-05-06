@@ -35,7 +35,10 @@ def fit_ellipse(edges):
       ell.estimate(edge_poins)
       xc, yc, a, b, theta = ell.params
       theta = theta*180/3.14
-      print(np.average(np.square(ell.residuals(edge_poins))))
+      R_square = np.average(np.square(ell.residuals(edge_poins)))
+      print(R_square)
+      if R_square > 10000:
+          return None # No ellipse found
       return xc, yc, a, b, theta
    except:
       return None 
