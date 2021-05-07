@@ -4,14 +4,14 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
-pre_filename = "../marathon-thermofisher-challenge-master/data/test"
-#files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
-#         "6 Coma & Caustic","7 Generally Hard"]
-files = [""]
-def load_images():
-    pngs=[]
-    tiffs = []
-    names = []
+pre_filename = "../marathon-thermofisher-challenge-master/data/train/"
+files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
+         "6 Coma & Caustic","7 Generally Hard"]
+#files = [""]
+def load_images(): #loading in the images
+    pngs=[] #if we have a png "solution" with the correct answer it will be shown for controlling the results
+    tiffs = [] #the images, we want to fit the ellipses on
+    names = [] #the name of the files (for the Results.csv)
     for file in files:
         path = pre_filename + file
         for filename in os.listdir(path):
@@ -22,10 +22,10 @@ def load_images():
                 names.append(file_n)
                 tiffs.append(cv2.imread(os.path.join(path,filename),-1))
             else:
-                print("???")
+                print("Unknown file format")
     return tiffs, pngs, names
 
-def create_csv(filename,results):
+def create_csv(filename,results): #writing out the results to a csv file
     with open(filename,'w',encoding='utf-8') as s:
         # Header
         s.write("filename,ellipse_center_x,ellipse_center_y,ellipse_majoraxis,ellipse_minoraxis,ellipse_angle,elapsed_time\n")
@@ -41,7 +41,7 @@ def create_csv(filename,results):
                 else:
                     s.write(str(data)+'\n')
 
-def calculator(ground_thruth_csv, results_csv):
+def calculator(ground_thruth_csv, results_csv): #this is for calculating our points based on the given gorund_thruths_train.csv
     score = 0
     truths = []
     results = []
@@ -86,7 +86,7 @@ def calculator(ground_thruth_csv, results_csv):
     return score
 
 
-def show_images(tiffs, filtered, pngs=None):
+def show_images(tiffs, filtered, pngs=None): #For showing the results, on a bit more visual way
     for i in range(len(tiffs)):
         f = plt.figure()
         f.add_subplot(2,2,1)
@@ -98,6 +98,3 @@ def show_images(tiffs, filtered, pngs=None):
         plt.imshow(filtered[i], cmap="gray",vmin=0,vmax=256)
         plt.show()
 
-if __name__=="__main__":
-    ti,pn = load_images()
-    show_images(ti,pn)

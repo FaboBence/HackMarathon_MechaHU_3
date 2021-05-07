@@ -27,10 +27,11 @@ def pre_process(img):
    return edges
 
 def inner_noise_filtering(edge_img,xc,yc,a,b,theta):
+   #We delete everything inside the first found ellipse, so we can reduce the noise
     out_img = cv2.ellipse(edge_img,(int(xc),int(yc)),(int(a),int(b)),int(theta),0,360,(0,0,0),-1)
     return out_img
 
-def curve_detection(img):
+def curve_detection(img): #At the current state of the code we dont use this function
     ret, labels = cv2.connectedComponents(img) # Searching for connected curves
     curves = []
     ellipses = []
@@ -74,17 +75,19 @@ def curve_detection(img):
     return best_fit
     
    # Ellipse fitting
-def fit_ellipse(edges):
-   edges_coord = np.where(edges > 0)
+def fit_ellipse(edges): # Fitting ellipse on the earlier found edges
+   edges_coord = np.where(edges > 0) # getting the coordinats from the image
    try :
+      #we bring the data into the required format 
       x, y = edges_coord[0], edges_coord[1]
       edge_poins = (y,x)
       edge_poins=np.array(edge_poins)
       edge_poins=np.transpose(edge_poins)
+      #fitting the ellipse
       ell = EllipseModel()
       ell.estimate(edge_poins)
       xc, yc, a, b, theta = ell.params
-      theta = theta*180/3.14
+      theta = theta*180/3.14 #converting from rad to deg
       R_square = np.average(np.square(ell.residuals(edge_poins))) # Variance
       if R_square > MAX_R_SQUARE:
           return None # No ellipse found
@@ -92,5 +95,3 @@ def fit_ellipse(edges):
    except:
       return None 
 
-if __name__ == "__main__":
-   pre_process(cv2.imread("../marathon-thermofisher-challenge-master/data/train/1 Easy Fits/2018-02-15 17.27.27.162000.tiff",-1))
