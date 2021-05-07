@@ -2,8 +2,8 @@ import cv2, time
 from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
-from EasyFits import *
-from image_loader import *
+from image_processing import *
+from file_manipulation import *
 
 def images(tiffs, filtered, pngs):
     for i in range(len(tiffs)):
