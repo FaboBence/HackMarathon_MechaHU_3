@@ -27,7 +27,7 @@ if __name__ == "__main__":
             print(R_square)
 
             # Curve detection
-            xc, yc, a, b, theta, R_square = curve_detection(filtered_img)
+            #xc, yc, a, b, theta, R_square = curve_detection(filtered_img)
 
             cv2.ellipse(pngs[i],(int(xc),int(yc)),(int(a),int(b)),int(theta),0,360,(0,255,0),3)
             end = time.time() # Measuring elapsed time

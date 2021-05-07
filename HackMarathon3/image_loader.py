@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 pre_filename = "../marathon-thermofisher-challenge-master/data/train/"
 files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
          "6 Coma & Caustic","7 Generally Hard"]
-
-def load_images(path = pre_filename+files[4-1]):
+#files = ["5 Illumination States 2"]
+def load_images():
     pngs=[]
     tiffs = []
     names = []

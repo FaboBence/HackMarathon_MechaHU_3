@@ -2,21 +2,28 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.measure import EllipseModel
-from matplotlib.patches import Ellipse
+import copy
+
+# Constants
+BLUR_KERNEL_SIZE = (25,25)
+BASE_THRESHOLD = 100
+THRESHOLD_OF_MAX_BRIGHTNESS = 1/7
+MAX_R_SQUARE = 10000
 
 def pre_process(img):
    # Image processing
-   max_brightnes = np.max(img)
+   max_brightness = np.max(img)
+
    # Blur
-   img_blur = cv2.GaussianBlur(img,(25,25),0,borderType = cv2.BORDER_DEFAULT)
+   img_blur = cv2.GaussianBlur(img,BLUR_KERNEL_SIZE,0,borderType = cv2.BORDER_DEFAULT)
+
    # Thresholding
-   ret, thresh16 = cv2.threshold(img_blur,int(max_brightnes/8),10,cv2.THRESH_BINARY)
-      # Edge detection
-   #kernel = np.array([[-1,-1,-1],[-1,8,-1], [-1,-1,-1]])
+   ret, thresh = cv2.threshold(img_blur,BASE_THRESHOLD,0,cv2.THRESH_TOZERO)
+   ret, thresh16 = cv2.threshold(thresh,int(max_brightness*THRESHOLD_OF_MAX_BRIGHTNESS),10,cv2.THRESH_BINARY)
+
+   # Edge detection
    thresh8 = thresh16.astype('uint8')
    edges = cv2.Canny(thresh8,9,11)
-   #plt.imshow(edges, cmap="gray", vmin=0, vmax=256)
-   #plt.show()
    return edges
 
 def inner_noise_filtering(edge_img,xc,yc,a,b,theta):
@@ -28,18 +35,26 @@ def curve_detection(img):
     curves = []
     ellipses = []
     best_fit = None
-    min_R = 10001
+    min_R = MAX_R_SQUARE
     max_len = 0
+    idx = 0
     for i in range(1,ret+1):
         tmp = np.where(labels == i, 1, 0)
         sum_tmp = np.sum(tmp)
         if sum_tmp > 30:
             curves.append(tmp)
             if sum_tmp > max_len:
-                best_fit = curves[-1]
+                #best_fit = curves[-1]
                 max_len = sum_tmp
-    try:
+                idx = len(curves)-1
+    tmp_out = np.zeros(curves[idx].shape)
+    rands = np.sort(np.random.choice(max_len,5,replace=False)) # Choosing random 5 points
+    points = np.where(curves[idx]>0)
+    for p in rands:
+        tmp_out[points[0][p]][points[1][p]] = 1
+    best_fit = copy.deepcopy(tmp_out)
 
+    try:
         xc,yc,a,b,theta,R_square = fit_ellipse(best_fit)
         best_fit = [xc,yc,a,b,theta,R_square]
     except:
@@ -70,9 +85,8 @@ def fit_ellipse(edges):
       ell.estimate(edge_poins)
       xc, yc, a, b, theta = ell.params
       theta = theta*180/3.14
-      R_square = np.average(np.square(ell.residuals(edge_poins)))
-      #print(R_square)
-      if R_square > 10000:
+      R_square = np.average(np.square(ell.residuals(edge_poins))) # Variance
+      if R_square > MAX_R_SQUARE:
           return None # No ellipse found
       return xc, yc, a, b, theta, R_square
    except:
