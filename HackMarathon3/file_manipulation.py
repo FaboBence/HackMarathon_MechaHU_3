@@ -4,10 +4,10 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
-pre_filename = "../marathon-thermofisher-challenge-master/data/train/"
-files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
-         "6 Coma & Caustic","7 Generally Hard"]
-#files = [""]
+pre_filename = "../marathon-thermofisher-challenge-master/data/test"
+#files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
+#         "6 Coma & Caustic","7 Generally Hard"]
+files = [""]
 def load_images(): #loading in the images
     pngs=[] #if we have a png "solution" with the correct answer it will be shown for controlling the results
     tiffs = [] #the images, we want to fit the ellipses on

@@ -19,7 +19,7 @@ def images(tiffs, filtered, pngs):
 if __name__ == "__main__":
     tiffs, pngs, names = load_images()
     pngs = []
-    #pngs = deepcopy(tiffs)
+    pngs = deepcopy(tiffs)
     done = []
     filtered = []
     results = []
