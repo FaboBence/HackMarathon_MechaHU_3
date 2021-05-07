@@ -1,4 +1,4 @@
-## HackMarathon_MechaHU_3 Electron Microscope image processing
+## HackMarathon_MechaHU_3 **Electron Microscope image processing**
 
 ## Team
 
@@ -21,9 +21,9 @@ On the left image, the green ellipse is the one fitted by us, the blue is provid
 ![image](https://user-images.githubusercontent.com/65888378/117469018-9281e780-af55-11eb-9431-832543ec5b88.png)
 
 # Detailed description
-During the preprocess stage, we apply Gaussian blur and thresholding algorithm to reduce noise. The parameters of the algorithms have been carefully set to reach an optimum on the training data set. The tresholding is not hard-coded, the parameters adapt themselves dynamically to the brightest pixels of the image.
+During the preprocess stage, we apply **Gaussian blur** and **thresholding** algorithm to reduce noise. The parameters of the algorithms have been carefully set to reach an optimum on the training data set. The tresholding is not hard-coded, the parameters adapt themselves dynamically to the brightest pixels of the image.
 
-The edge detection is done by a Canny algorithm. At this stage of image procession the picture is usually still noisy, so the algorithm won't only find the edges of the ground truth ellipse, but also other edges which have to be removed in the further steps.
+The **edge detection** is done by a **Canny algorithm**. At this stage of image procession the picture is usually still noisy, so the algorithm won't only find the edges of the ground truth ellipse, but also other edges which have to be removed in the further steps.
 
 As we mentioned earlier, after edge detection the fitted ellipse won't fit well due the noisy edges.
 
@@ -35,11 +35,11 @@ We realised that the noise we are dealing with is mostly inside of the ground tr
 ![image](https://user-images.githubusercontent.com/65888378/117475170-07582000-af5c-11eb-95cd-2af90d69ef34.png)
 ![image](https://user-images.githubusercontent.com/65888378/117475206-0de69780-af5c-11eb-98f3-31ee71d99023.png)
 
-We also compute the variance (from now referred as R^2) to every generated ellipse which gives a sense of how well it fits. If R^2 is too high, we assume that no ellipse could be found on the picture.
+We also compute the variance to every generated ellipse which gives a sense of how well it fits. If the variance is too high, we assume that no ellipse could be found on the picture.
 
 # Further ideas
 We've also come up with ideas that seemed to be beneficial in solving the problem, but turned out to be too hard to implement or not precise enough to improve the results.
-One of these ideas was to find continuous edges and divide them into smaller sections. We wanted to find an ellipse which fits a section almost perfectly based on the theory, that if a ground truth ellipse exist, then there has to be at least a small edge section on the image which is part of it. Although this idea still seems to be great, we couldn't implement it precisely enough to make our results better. Here is the best fit we could achieve with it. (The red ellipse is fitted by this algorithm.)
+One of these ideas was to find **continuous edges** and divide them into **smaller sections**. **We wanted to find an ellipse which fits a section almost perfectly** based on the theory, that if a ground truth ellipse exist, then there has to be at least a small edge section on the image which is part of it. Although this idea still seems to be great, we couldn't implement it precisely enough to make our results better. Here is the best fit we could achieve with it. (The red ellipse is fitted by this algorithm.)
 
 ![image](https://user-images.githubusercontent.com/65888378/117479437-a121cc00-af60-11eb-835d-26b5857f5ca7.png)
 
