@@ -4,10 +4,10 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
-pre_filename = "../marathon-thermofisher-challenge-master/data/train/"
-files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
-         "6 Coma & Caustic","7 Generally Hard"]
-#files = ["5 Illumination States 2"]
+pre_filename = "../marathon-thermofisher-challenge-master/data/test"
+#files = ["1 Easy Fits","2 Hardly Fittable","3 Grid Cut-offs","4 Illumination States 1","5 Illumination States 2",
+#         "6 Coma & Caustic","7 Generally Hard"]
+files = [""]
 def load_images():
     pngs=[]
     tiffs = []
@@ -87,7 +87,6 @@ def calculator(ground_thruth_csv, results_csv):
 
 
 def show_images(tiffs, filtered, pngs=None):
-    #print(len(tiffs))
     for i in range(len(tiffs)):
         f = plt.figure()
         f.add_subplot(2,2,1)

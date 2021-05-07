@@ -5,12 +5,26 @@ import matplotlib.pyplot as plt
 from EasyFits import *
 from image_loader import *
 
+def images(tiffs, filtered, pngs):
+    for i in range(len(tiffs)):
+        f = plt.figure()
+        f.add_subplot(2,2,1)
+        plt.imshow(tiffs[i], cmap="gray", vmin=0, vmax=256)
+        f.add_subplot(2,2,2)
+        plt.imshow(pngs[i], cmap="gray", vmin=0, vmax=600)
+        f.add_subplot(2,2,3)
+        plt.imshow(filtered[i], cmap="gray",vmin=0,vmax=256)
+        plt.show()
+
 if __name__ == "__main__":
     tiffs, pngs, names = load_images()
+    pngs = []
+    #pngs = deepcopy(tiffs)
     done = []
     filtered = []
     results = []
     for i,tiff in enumerate(tiffs):
+        pngs.append(cv2.cvtColor(deepcopy(tiff),cv2.COLOR_GRAY2RGB))
         start = time.time() # Measuring elapsed time
         # Edge detection
         done.append(pre_process(tiff))
@@ -18,7 +32,7 @@ if __name__ == "__main__":
             # First ellipse fit on raw edge detection data
             xc, yc, a, b, theta, R_square = fit_ellipse(done[-1])
             cv2.ellipse(pngs[i],(int(xc),int(yc)),(int(a),int(b)),int(theta),0,360,(255,0,0),3)
-            print(R_square)
+            #print(R_square)
 
             # Noise filtering
             filtered_img = inner_noise_filtering(deepcopy(done[-1]),xc,yc,a,b,theta)
@@ -39,4 +53,4 @@ if __name__ == "__main__":
     create_csv("Results.csv", results)
     score = calculator("../marathon-thermofisher-challenge-master/data/ground_truths_train.csv","Results.csv")
     print("Score:",score)
-    show_images(done,filtered, pngs)
+    images(done,filtered, pngs)

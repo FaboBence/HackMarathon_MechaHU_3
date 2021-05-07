@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>33f81f57-e59a-49e2-b7fd-6870357da6b9</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>HackMarathon3.py</StartupFile>
+    <StartupFile>Main_test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,6 +26,9 @@
     </Compile>
     <Compile Include="HackMarathon3.py" />
     <Compile Include="image_loader.py" />
+    <Compile Include="Main_test.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
